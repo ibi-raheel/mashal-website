@@ -426,7 +426,9 @@ a { color: inherit; }
     z-index: var(--z-menu);
     flex-direction: column; align-items: stretch; gap: 0;
     padding: var(--space-md) var(--gutter) var(--space-xl);
-    background: rgba(13, 11, 33, 0.98);
+    /* Solid, not translucent: the dropdown sits over the busy hero, and a
+       near-opaque panel let bright content ghost through the links. */
+    background: var(--bg-dark);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
     border-bottom: 1px solid rgba(207, 201, 240, 0.14);

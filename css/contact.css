@@ -56,7 +56,9 @@
   font-size: var(--step-1);
   font-weight: var(--fw-semibold);
   color: var(--brand-purple);
-  overflow-wrap: anywhere;
+  /* Long email is one unbroken token; break at the <wbr> after "@" first,
+     and only chop mid-word as a last resort on the very narrowest screens. */
+  overflow-wrap: break-word;
 }
 .contact__note-aside { font-size: var(--step--1); color: var(--text-muted); }
 
@@ -118,4 +120,7 @@
 @media (max-width: 47.99em) {
   .form { padding: var(--space-lg); }
   .form__submit { justify-self: stretch; }
+  /* Drop the email a step so the local part fits the narrow card column
+     and wraps at the "@" (via <wbr>) instead of overrunning the card edge. */
+  .contact__direct-value { font-size: var(--step-0); }
 }
