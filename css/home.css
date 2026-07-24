@@ -1,0 +1,545 @@
+/* ==========================================================================
+   Mashal — Home
+   (The lit path component lives in main.css — why-us.html uses it too.)
+   ========================================================================== */
+
+/* ==========================================================================
+   Hero
+   ========================================================================== */
+.hero {
+  position: relative;
+  isolation: isolate;
+  background: var(--bg-dark);
+  color: var(--text-on-dark-soft);
+  padding-block: clamp(3rem, 2rem + 5vw, 5.5rem) clamp(4rem, 3rem + 6vw, 7rem);
+  overflow: hidden;
+}
+.hero__glow {
+  position: absolute; inset: 0; z-index: -1;
+  background:
+    radial-gradient(46rem 34rem at 20% 26%, rgba(91, 63, 224, 0.32), transparent 62%),
+    radial-gradient(38rem 30rem at 84% 16%, rgba(59, 130, 246, 0.22), transparent 60%),
+    radial-gradient(30rem 24rem at 62% 94%, rgba(79, 22, 117, 0.3), transparent 65%);
+  pointer-events: none;
+}
+
+.hero__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  align-items: center;
+  gap: clamp(2rem, 1rem + 5vw, 4.5rem);
+}
+.hero__copy { min-width: 0; }
+
+.hero__title { font-size: var(--step-5); color: var(--text-on-dark); margin-bottom: var(--space-lg); }
+
+/* The one gradient text on the site — the single word the pitch turns on. */
+.hero__accent {
+  background: linear-gradient(100deg, var(--blue-on-dark), var(--violet-on-dark));
+  -webkit-background-clip: text;
+          background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+@supports not ((-webkit-background-clip: text) or (background-clip: text)) {
+  .hero__accent { background: none; color: var(--violet-on-dark); -webkit-text-fill-color: currentColor; }
+}
+
+.hero__lede {
+  font-size: var(--step-1);
+  line-height: 1.5;
+  color: var(--text-on-dark-soft);
+  max-width: 42ch;
+  margin-bottom: var(--space-xl);
+}
+.hero__lede strong { color: var(--text-on-dark); font-weight: var(--fw-semibold); }
+
+.hero__actions { display: flex; flex-wrap: wrap; gap: var(--space-md); margin-bottom: var(--space-xl); }
+
+.hero__trust {
+  display: flex; flex-wrap: wrap;
+  gap: var(--space-lg);
+  font-size: var(--step--1);
+  font-weight: var(--fw-medium);
+  color: var(--text-on-dark-muted);
+}
+.hero__trust li { display: flex; align-items: center; gap: var(--space-xs); }
+.hero__trust li::before {
+  content: "";
+  width: 1rem; height: 1rem;
+  flex: none;
+  border-radius: 50%;
+  background: var(--blue-on-dark);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l3.6 3.6L18 8' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l3.6 3.6L18 8' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+/* ==========================================================================
+   The deck — three outcome cards taking turns at the front of a slowly
+   shuffling hand. Base styles are the STATIC FAN (a front, b back-left,
+   c back-right): what no-JS and reduced-motion visitors see. The shuffle
+   only runs once the hero says go.
+   ========================================================================== */
+.hero__visual {
+  width: min(100%, 34rem);
+  margin-inline: auto;
+}
+.deck {
+  display: grid;
+  padding-block: var(--space-xl);        /* room for the fan's spread */
+  filter: drop-shadow(0 26px 64px rgba(13, 11, 33, 0.55));
+}
+.deck-card {
+  grid-area: 1 / 1;                       /* all three share one cell */
+  width: min(100%, 27.5rem);
+  justify-self: center;
+  background: linear-gradient(165deg, #FFFFFF, var(--bg-tint));
+  border: 1px solid rgba(207, 201, 240, 0.35);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  will-change: transform, opacity;
+}
+
+/* The static fan — also each card's "home" slot in the shuffle. */
+.deck-card--a { transform: none; opacity: 1; z-index: 3; }
+.deck-card--b { transform: translate(-13%, 7%) scale(0.92) rotate(-5deg); opacity: 0.75; z-index: 1; }
+.deck-card--c { transform: translate(13%, 7%) scale(0.92) rotate(5deg); opacity: 0.75; z-index: 2; }
+
+.deck-card__head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+}
+.deck-card__chip {
+  display: grid; place-items: center;
+  width: 2.4rem; height: 2.4rem;
+  flex: none;
+  color: #FFFFFF;
+  background: var(--cta-gradient);
+  border-radius: var(--radius-md);
+}
+.deck-card__chip svg { width: 58%; height: 58%; }
+.deck-card__title {
+  font-family: var(--font-display);
+  font-weight: var(--fw-semibold);
+  font-size: var(--step-1);
+  letter-spacing: var(--tracking-tight);
+  color: var(--text-ink);
+}
+
+/* ---- Card visualisations: each reads as the thing it's named ------------- */
+.deck-card__viz { min-height: 7.5rem; }
+
+/* Website: a landing page inside browser chrome. */
+.mock--site {
+  border: 1px solid rgba(26, 22, 80, 0.12);
+  border-radius: 0.6rem;
+  overflow: hidden;
+  background: #FFFFFF;
+}
+.mock__bar {
+  display: flex; align-items: center; gap: 0.35rem;
+  padding: 0.45rem 0.6rem;
+  background: var(--bg-tint);
+  border-bottom: 1px solid rgba(26, 22, 80, 0.1);
+}
+.mock__bar i { width: 0.42rem; height: 0.42rem; border-radius: 50%; background: rgba(26, 22, 80, 0.22); }
+.mock__url {
+  margin-left: 0.4rem; padding: 0.1rem 0.5rem;
+  font-size: 0.6rem; color: var(--text-muted);
+  background: #FFFFFF; border-radius: var(--radius-pill);
+}
+.mock__page { display: grid; gap: 0.6rem; padding: 0.75rem; }
+/* nav: brand square + real link labels + a filled CTA pill */
+.mock__nav { display: flex; align-items: center; gap: 0.55rem; }
+.mock__logo { width: 1.05rem; height: 1.05rem; border-radius: 0.28rem; background: var(--cta-gradient); flex: none; }
+.mock__navtxt { font-size: 0.62rem; font-weight: var(--fw-medium); color: var(--text-body); }
+.mock__cta {
+  margin-left: auto;
+  font-size: 0.6rem; font-weight: var(--fw-semibold); color: #FFFFFF;
+  padding: 0.12rem 0.55rem; border-radius: var(--radius-pill);
+  background: var(--cta-gradient);
+}
+/* hero: gradient band with a real white headline + button inside */
+.mock__hero {
+  position: relative;
+  border-radius: 0.45rem;
+  padding: 0.7rem 0.7rem;
+  display: grid; justify-items: start; gap: 0.4rem;
+  background: linear-gradient(120deg, var(--brand-blue), var(--brand-purple));
+}
+.mock__hero-title {
+  font-family: var(--font-display);
+  font-size: 0.82rem; font-weight: var(--fw-bold);
+  letter-spacing: var(--tracking-tight); color: #FFFFFF;
+}
+.mock__hero-sub { height: 0.4rem; width: 70%; border-radius: 0.2rem; background: rgba(255, 255, 255, 0.55); }
+.mock__hero-btn {
+  margin-top: 0.1rem;
+  font-size: 0.6rem; font-weight: var(--fw-semibold); color: var(--brand-purple);
+  padding: 0.16rem 0.6rem; border-radius: var(--radius-pill);
+  background: #FFFFFF;
+}
+/* three product tiles, each with a coloured chip + real label */
+.mock__tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.45rem; }
+.mock__tile {
+  display: grid; justify-items: center; gap: 0.3rem;
+  padding: 0.5rem 0.3rem;
+  font-size: 0.58rem; font-weight: var(--fw-medium); color: var(--text-body);
+  background: var(--bg-tint);
+  border: 1px solid rgba(26, 22, 80, 0.08);
+  border-radius: 0.35rem;
+}
+.mock__tile em { width: 0.85rem; height: 0.85rem; border-radius: 0.22rem; }
+
+/* Automation: three nodes joined by arrows, the last one lit. */
+.mock--flow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+.fnode {
+  display: grid; place-items: center;
+  width: 3rem; height: 3rem;
+  flex: none;
+  color: var(--brand-blue);
+  background: #FFFFFF;
+  border: 1.5px solid rgba(43, 84, 162, 0.4);
+  border-radius: var(--radius-md);
+  box-shadow: 0 3px 10px rgba(26, 22, 80, 0.08);
+}
+.fnode svg { width: 55%; height: 55%; }
+.fnode--lit {
+  color: #FFFFFF;
+  background: var(--cta-gradient);
+  border-color: transparent;
+}
+.farrow {
+  position: relative;
+  width: 1.5rem; height: 2px; flex: none;
+  background: linear-gradient(90deg, var(--brand-blue), var(--brand-purple));
+}
+.farrow::after {
+  content: "";
+  position: absolute; right: -1px; top: 50%;
+  width: 0.4rem; height: 0.4rem;
+  border-top: 2px solid var(--brand-purple);
+  border-right: 2px solid var(--brand-purple);
+  transform: translateY(-50%) rotate(45deg);
+}
+
+/* CRM: a contacts table — avatar, name, status pill per row. */
+.mock--table {
+  display: grid;
+  gap: 0.5rem;
+  padding: 0.75rem 0.85rem;
+  background: #FFFFFF;
+  border: 1px solid rgba(26, 22, 80, 0.12);
+  border-radius: 0.6rem;
+}
+/* header: icon tile + real title + a "+ New" action */
+.thead { display: flex; align-items: center; gap: 0.5rem; padding-bottom: 0.5rem; border-bottom: 1px solid rgba(26, 22, 80, 0.1); }
+.thead__ico {
+  display: grid; place-items: center;
+  width: 1.5rem; height: 1.5rem; flex: none;
+  color: #FFFFFF; background: var(--cta-gradient); border-radius: 0.35rem;
+}
+.thead__ico svg { width: 62%; height: 62%; }
+.thead__title { font-family: var(--font-display); font-size: 0.78rem; font-weight: var(--fw-bold); color: var(--text-ink); }
+.thead__add {
+  margin-left: auto;
+  font-size: 0.58rem; font-weight: var(--fw-semibold); color: var(--brand-purple);
+  padding: 0.12rem 0.45rem; border-radius: var(--radius-pill);
+  background: rgba(91, 63, 224, 0.1);
+}
+/* column labels */
+.tcols { display: grid; grid-template-columns: auto 1fr auto; gap: 0.55rem; }
+.tcols span {
+  font-size: 0.55rem; font-weight: var(--fw-semibold); letter-spacing: 0.04em;
+  text-transform: uppercase; color: var(--text-muted);
+}
+.tcols span:first-child { grid-column: 1 / 3; }
+.trow { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 0.55rem; }
+.ava {
+  display: grid; place-items: center;
+  width: 1.5rem; height: 1.5rem; border-radius: 50%; flex: none;
+  font-size: 0.62rem; font-weight: var(--fw-bold); color: #FFFFFF;
+  font-family: var(--font-display);
+}
+.ava--1 { background: linear-gradient(135deg, #60A5FA, #2B54A2); }
+.ava--2 { background: linear-gradient(135deg, #A78BFA, #5B3FE0); }
+.ava--3 { background: linear-gradient(135deg, #4F1675, #8B5CF6); }
+.nm { font-size: 0.68rem; font-weight: var(--fw-medium); color: var(--text-ink); }
+.pill {
+  font-size: 0.55rem; font-weight: var(--fw-semibold); color: #FFFFFF;
+  padding: 0.12rem 0.5rem; border-radius: var(--radius-pill);
+}
+.pill--go { background: rgba(34, 150, 94, 0.95); }
+.pill--wait { background: rgba(214, 158, 46, 0.98); }
+
+/* ---- The shuffle (JS present + hero started only) ------------------------ */
+/* One 12s cycle; each card holds a slot ~a third of it, then glides on.
+   z-index snaps at the keyframes while transform/opacity glide — the snap
+   happens mid-crossing where it reads as the cards passing each other. */
+.js .hero.is-ready .deck-card--a { animation: deck-a 12s var(--ease-in-out) 1.8s infinite; }
+.js .hero.is-ready .deck-card--b { animation: deck-b 12s var(--ease-in-out) 1.8s infinite; }
+.js .hero.is-ready .deck-card--c { animation: deck-c 12s var(--ease-in-out) 1.8s infinite; }
+
+@keyframes deck-a {
+  0%, 27%   { transform: none; opacity: 1; z-index: 3; }
+  33%, 60%  { transform: translate(-13%, 7%) scale(0.92) rotate(-5deg); opacity: 0.75; z-index: 1; }
+  66%, 94%  { transform: translate(13%, 7%) scale(0.92) rotate(5deg); opacity: 0.75; z-index: 2; }
+  100%      { transform: none; opacity: 1; z-index: 3; }
+}
+@keyframes deck-b {
+  0%, 27%   { transform: translate(-13%, 7%) scale(0.92) rotate(-5deg); opacity: 0.75; z-index: 1; }
+  33%, 60%  { transform: translate(13%, 7%) scale(0.92) rotate(5deg); opacity: 0.75; z-index: 2; }
+  66%, 94%  { transform: none; opacity: 1; z-index: 3; }
+  100%      { transform: translate(-13%, 7%) scale(0.92) rotate(-5deg); opacity: 0.75; z-index: 1; }
+}
+@keyframes deck-c {
+  0%, 27%   { transform: translate(13%, 7%) scale(0.92) rotate(5deg); opacity: 0.75; z-index: 2; }
+  33%, 60%  { transform: none; opacity: 1; z-index: 3; }
+  66%, 94%  { transform: translate(-13%, 7%) scale(0.92) rotate(-5deg); opacity: 0.75; z-index: 1; }
+  100%      { transform: translate(13%, 7%) scale(0.92) rotate(5deg); opacity: 0.75; z-index: 2; }
+}
+
+/* The whole hand floats gently, like everything else alive on this site. */
+.js .hero.is-ready .deck,
+.hero.is-settled .deck { animation: floaty 8s var(--ease-in-out) 2.4s infinite; }
+
+/* ---- Load sequence ------------------------------------------------------ */
+/* Only hide when JS is present to un-hide it. */
+.js .hero-seq { opacity: 0; transform: translateY(0.9rem); }
+.js .hero__visual { opacity: 0; }
+
+.js .hero.is-ready .hero-seq {
+  animation: hero-in var(--dur-slow) var(--ease-out) var(--seq-delay, 0ms) forwards;
+}
+@keyframes hero-in {
+  from { opacity: 0; transform: translateY(0.9rem); }
+  to   { opacity: 1; transform: none; }
+}
+.js .hero.is-ready .hero__visual { animation: visual-in 800ms var(--ease-out) 250ms forwards; }
+@keyframes visual-in {
+  from { opacity: 0; transform: translateY(1rem) scale(0.97); }
+  to   { opacity: 1; transform: none; }
+}
+
+.js .hero-seq[data-seq="1"] { --seq-delay: 850ms; }
+.js .hero-seq[data-seq="2"] { --seq-delay: 980ms; }
+.js .hero-seq[data-seq="3"] { --seq-delay: 1120ms; }
+.js .hero-seq[data-seq="4"] { --seq-delay: 1260ms; }
+.js .hero-seq[data-seq="5"] { --seq-delay: 1400ms; }
+
+/* ==========================================================================
+   The shift is already here — cited industry stats (one-pager numbers).
+   ========================================================================== */
+.stats { padding-block: clamp(3.5rem, 2.5rem + 4vw, 5.5rem); }
+.stats__eyebrow { display: flex; justify-content: center; width: 100%; }
+.stats__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-xl);
+  margin-top: var(--space-lg);
+}
+.stat { text-align: center; }
+.stat__num {
+  display: block;
+  font-family: var(--font-display);
+  font-size: var(--step-5);
+  font-weight: var(--fw-bold);
+  line-height: 1;
+  letter-spacing: var(--tracking-tight);
+  margin-bottom: var(--space-xs);
+  background: var(--brand-gradient);
+  -webkit-background-clip: text;
+          background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+@supports not ((-webkit-background-clip: text) or (background-clip: text)) {
+  .stat__num { background: none; color: var(--brand-purple); -webkit-text-fill-color: currentColor; }
+}
+.stat__label {
+  color: var(--text-body);
+  font-size: var(--step-1);
+  line-height: 1.4;
+  max-width: 20ch;
+  margin-inline: auto;
+}
+.stats__src {
+  margin-top: var(--space-xl);
+  text-align: center;
+  font-size: var(--step--1);
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+@media (max-width: 47.99em) {
+  .stats__grid { grid-template-columns: 1fr; gap: var(--space-lg); }
+}
+
+/* ==========================================================================
+   The programme at a glance — a plain strip of four facts. No cards, no
+   panel: the icons and a hairline between items do all the work.
+   ========================================================================== */
+.facts {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-lg);
+  margin-bottom: var(--space-3xl);
+}
+.fact {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+.fact:not(:first-child) {
+  padding-left: var(--space-lg);
+  border-left: 1px solid rgba(26, 22, 80, 0.12);
+}
+.fact__icon { width: 3rem; height: 3rem; flex: none; }
+.fact__body { display: grid; line-height: 1.35; min-width: 0; }
+.fact__body strong {
+  font-family: var(--font-display);
+  font-weight: var(--fw-semibold);
+  font-size: var(--step-2);
+  letter-spacing: var(--tracking-tight);
+  color: var(--text-ink);
+}
+.fact__body span { font-size: var(--step-0); color: var(--text-muted); }
+
+@media (max-width: 61.99em) {
+  .facts { grid-template-columns: repeat(2, 1fr); row-gap: var(--space-xl); }
+  .fact:nth-child(3) { padding-left: 0; border-left: 0; }
+}
+@media (max-width: 35.99em) {
+  .facts { grid-template-columns: 1fr; }
+  .fact:not(:first-child) { padding-left: 0; border-left: 0; }
+}
+
+/* ==========================================================================
+   The syllabus — eight sessions on two lit rails, side by side. The site's
+   station language (gradient line + circle markers), no tiles anywhere.
+   Numbers, not icons, in the markers: this is a genuine sequence.
+   ========================================================================== */
+.syllabus {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-2xl) clamp(2rem, 1rem + 4vw, 5rem);
+}
+.srail {
+  position: relative;
+  display: grid;
+  row-gap: var(--space-xl);
+}
+.srail::before {
+  content: "";
+  position: absolute;
+  left: calc(1.875rem - 1px);
+  top: 1.5rem;
+  bottom: 1.5rem;
+  width: 2px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, var(--brand-blue), var(--brand-purple));
+  opacity: 0.8;
+}
+.srail__item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 3.75rem 1fr;
+  column-gap: var(--space-lg);
+  align-items: center;
+}
+.srail__marker {
+  display: grid;
+  place-items: center;
+  width: 3.75rem;
+  height: 3.75rem;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1px solid rgba(91, 63, 224, 0.22);
+  box-shadow: 0 4px 14px rgba(26, 22, 80, 0.12), 0 0 0 6px rgba(245, 244, 255, 0.9);
+  z-index: 1;
+  font-family: var(--font-display);
+  font-weight: var(--fw-bold);
+  font-size: var(--step-1);
+  letter-spacing: var(--tracking-tight);
+  background-color: var(--surface);
+  color: var(--brand-purple);
+}
+.srail__text { min-width: 0; }
+.srail__text h3 { font-size: var(--step-2); margin-bottom: 0.25rem; }
+.srail__text p { font-size: var(--step-0); color: var(--text-muted); }
+
+@media (max-width: 47.99em) {
+  .syllabus { grid-template-columns: 1fr; gap: var(--space-xl); }
+}
+
+/* ==========================================================================
+   The shift — the visual half of the "gap" split
+   ========================================================================== */
+.shift {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-md);
+  padding: var(--space-2xl) var(--space-xl);
+  background: linear-gradient(160deg, #FFFFFF, var(--bg-tint));
+  border: 1px solid rgba(26, 22, 80, 0.09);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+}
+.shift__row { display: grid; justify-items: center; gap: var(--space-2xs); text-align: center; }
+.shift__label {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.shift__value {
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-snug);
+  color: var(--text-ink);
+}
+.shift__value em { font-style: normal; color: var(--brand-purple); }
+.shift__row--from .shift__value em { color: var(--text-muted); }
+.shift__arrow { width: 1.5rem; color: var(--brand-blue); }
+.shift__arrow svg { width: 100%; height: auto; }
+
+/* ==========================================================================
+   Hero responsive
+   ========================================================================== */
+@media (max-width: 61.99em) {
+  .hero__inner { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+  .hero__visual { grid-row: 1; width: min(78vw, 21rem); margin-bottom: var(--space-xl); }
+  .hero__copy { grid-row: 2; }
+  .hero__lede { margin-inline: auto; }
+  .hero__actions, .hero__trust { justify-content: center; }
+  .deck-card__head, .deck-card__title { text-align: left; }
+}
+
+@media (max-width: 35.99em) {
+  .hero__visual { width: min(86vw, 18rem); }
+  .hero__actions { flex-direction: column; align-items: stretch; width: 100%; }
+  .hero__actions .btn { width: 100%; }
+  .hero__trust { gap: var(--space-md); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* The shuffle never stops, so it's the first thing to go — the static fan
+     (the base styles above) is the reduced-motion experience. */
+  .deck, .deck-card,
+  .js .hero.is-ready .deck,
+  .js .hero.is-ready .deck-card--a,
+  .js .hero.is-ready .deck-card--b,
+  .js .hero.is-ready .deck-card--c {
+    animation: none !important;
+  }
+  .js .hero__visual { opacity: 1 !important; transform: none !important; animation: none !important; }
+}
