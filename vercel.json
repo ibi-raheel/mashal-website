@@ -3,9 +3,9 @@
   "trailingSlash": false,
   "redirects": [
     {
-      "source": "/:path*",
+      "source": "/(.*)",
       "has": [{ "type": "host", "value": "www.mashalaiacademy.com" }],
-      "destination": "https://mashalaiacademy.com/:path*",
+      "destination": "https://mashalaiacademy.com/$1",
       "permanent": true
     }
   ]
